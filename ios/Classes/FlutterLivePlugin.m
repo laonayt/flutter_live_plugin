@@ -1,0 +1,44 @@
+#import "FlutterLivePlugin.h"
+#import "LFViewController.h"
+
+@interface FlutterLivePlugin ()
+@property(strong, nonatomic) UIViewController *viewController;
+@end
+
+@implementation FlutterLivePlugin
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+  FlutterMethodChannel* channel = [FlutterMethodChannel
+      methodChannelWithName:@"flutter_live_plugin"
+            binaryMessenger:[registrar messenger]];
+
+  UIViewController *viewController =
+    [UIApplication sharedApplication].delegate.window.rootViewController;
+
+  FlutterLivePlugin* instance = [[FlutterLivePlugin alloc] initWithViewController:viewController];
+  [registrar addMethodCallDelegate:instance channel:channel];
+}
+
+- (instancetype)initWithViewController:(UIViewController *)viewController {
+  self = [super init];
+  if (self) {
+    self.viewController = viewController;
+  }
+  return self;
+}
+
+- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+  if ([call.method isEqualToString:@"startLive"]) {
+      NSDictionary * dict = call.arguments;
+      NSLog(@"流地址是 %@",dict[@"url"]);
+
+      LFViewController *liveVC = [[LFViewController alloc] init];
+      liveVC.liveUrl = dict[@"url"];
+      liveVC.modalPresentationStyle = UIModalPresentationFullScreen;
+      [self.viewController presentViewController:liveVC animated:YES completion:nil];
+  }
+  else {
+    result(FlutterMethodNotImplemented);
+  }
+}
+
+@end
