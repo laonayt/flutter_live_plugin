@@ -30,6 +30,7 @@ typedef enum {
 @property (nonatomic ,assign) Camera_Type cameraType;
 @property (nonatomic ,strong) UIImageView *countImageV;
 @property (nonatomic ,assign) int countIndex;
+@property (nonatomic ,assign) UIButton *startLiveBtn;
 @end
 
 @implementation LFViewController
@@ -45,7 +46,7 @@ typedef enum {
     
     self.countIndex = 5;
     
-//    [self.session setRunning:YES];
+    [self.session setRunning:YES];
     
     [self initUI];
     
@@ -80,6 +81,7 @@ typedef enum {
     [startLiveBtn setImage:[UIImage imageNamed:@"pause_live"] forState:UIControlStateSelected];
     [startLiveBtn addTarget:self action:@selector(startLive:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:startLiveBtn];
+    self.startLiveBtn = startLiveBtn;
     
     UIImageView *imageV  = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenW-48)/2, (ScreenH-54)/2, 48, 54)];
     [self.view addSubview:imageV];
@@ -106,6 +108,7 @@ typedef enum {
     } else {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(countDown) object:nil];
         [self.countImageV removeFromSuperview];
+        [self startLive:self.startLiveBtn];
     }
     self.countIndex--;
 }
