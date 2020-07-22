@@ -7,4 +7,9 @@ class FlutterLivePlugin {
   static startLive(String url) async {
     await _channel.invokeMethod('startLive', {"url" : url});
   }
+
+  static sendBarrage(String msg) async {
+    await _channel.invokeMethod('sendBarrage', {"msg" : msg});
+  }
+
 }

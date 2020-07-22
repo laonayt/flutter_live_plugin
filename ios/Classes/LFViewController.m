@@ -8,6 +8,7 @@
 
 #import "LFViewController.h"
 #import "LFLiveKit.h"
+#import "ChatRoomView.h"
 
 typedef enum {
     foront_Camera,
@@ -23,26 +24,32 @@ typedef enum {
 #define KTop (K_iPhoneXStyle ? 24.f : 0.f)
 
 @interface LFViewController ()<LFLiveSessionDelegate>
-@property (nonatomic, strong) UILabel *stateLabel;
-@property (nonatomic, strong) LFLiveSession *session;
+@property (nonatomic ,strong) UILabel *stateLabel;
+@property (nonatomic ,strong) LFLiveSession *session;
 @property (nonatomic ,strong) LFLiveStreamInfo *streamInfo;
 @property (nonatomic ,assign) Camera_Type cameraType;
-
+@property (nonatomic ,strong) UIImageView *countImageV;
+@property (nonatomic ,assign) int countIndex;
 @end
 
 @implementation LFViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor blackColor];
     //默认前置摄像头
     self.cameraType = foront_Camera;
     //隐藏状态栏
     [UIApplication sharedApplication].statusBarHidden = YES;
     
-    [self.session setRunning:YES];
+    self.countIndex = 5;
+    
+//    [self.session setRunning:YES];
     
     [self initUI];
+    
+    [self countDown];
 }
 
 #pragma mark - UI
@@ -73,6 +80,34 @@ typedef enum {
     [startLiveBtn setImage:[UIImage imageNamed:@"pause_live"] forState:UIControlStateSelected];
     [startLiveBtn addTarget:self action:@selector(startLive:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:startLiveBtn];
+    
+    UIImageView *imageV  = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenW-48)/2, (ScreenH-54)/2, 48, 54)];
+    [self.view addSubview:imageV];
+    self.countImageV = imageV;
+    
+    ChatRoomView *chatV = [[ChatRoomView alloc] initWithFrame:CGRectMake(0, ScreenH-300, ScreenW, 280)];
+    [self.view addSubview:chatV];
+}
+
+//int dd = 1;
+//- (void)mockMessage {
+//    [self.chatV receiveMessageMethod:[NSString stringWithFormat:@"Hello: %d",dd]];
+//    [self performSelector:@selector(mockMessage) withObject:nil afterDelay:1];
+//    dd++;
+//}
+
+#pragma mark - 倒计时
+- (void)countDown {
+    NSString *name = [NSString stringWithFormat:@"icon_live_%d",self.countIndex];
+    self.countImageV.image = [UIImage imageNamed:name];
+    
+    if (self.countIndex >= 1) {
+        [self performSelector:@selector(countDown) withObject:nil afterDelay:1];
+    } else {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(countDown) object:nil];
+        [self.countImageV removeFromSuperview];
+    }
+    self.countIndex--;
 }
 
 #pragma mark - 开始推流

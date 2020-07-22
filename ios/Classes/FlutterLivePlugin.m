@@ -27,14 +27,20 @@
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([call.method isEqualToString:@"startLive"]) {
-      NSDictionary * dict = call.arguments;
-      NSLog(@"流地址是 %@",dict[@"url"]);
+  NSDictionary * dict = call.arguments;
 
+  if ([call.method isEqualToString:@"startLive"]) {
       LFViewController *liveVC = [[LFViewController alloc] init];
       liveVC.liveUrl = dict[@"url"];
       liveVC.modalPresentationStyle = UIModalPresentationFullScreen;
       [self.viewController presentViewController:liveVC animated:YES completion:nil];
+      NSLog(@"流地址是 %@",dict[@"url"]);
+
+  }
+  else if ([call.method isEqualToString:@"sendBarrage"]) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"barrageNoti" object:dict[@"msg"]];
+      NSLog(@"收到弹幕: %@",dict[@"msg"]);
+
   }
   else {
     result(FlutterMethodNotImplemented);
