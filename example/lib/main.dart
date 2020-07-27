@@ -18,10 +18,11 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
 
-//    MqttTool.getInstance().initMqtt('laona');
-//    MqttTool.getInstance().msgCallBack = (msg){
-//      FlutterLivePlugin.sendBarrage(msg);
-//    };
+    MqttTool.getInstance().initMqtt('laona');
+    MqttTool.getInstance().msgCallBack = (msg){
+      FlutterLivePlugin.sendBarrage(msg);
+      print("哈哈哈:" + msg);
+    };
   }
 
   @override

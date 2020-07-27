@@ -1,5 +1,8 @@
 package com.flutter_live_plugin;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +17,7 @@ import com.laifeng.sopcastsdk.stream.packer.rtmp.RtmpPacker;
 import com.laifeng.sopcastsdk.stream.sender.rtmp.RtmpSender;
 import com.laifeng.sopcastsdk.ui.CameraLivingView;
 
-public class LivingActivity extends Activity {
+public class LivingActivity extends AppCompatActivity {
     private CameraLivingView mLFLiveView;
     private RtmpSender mRtmpSender;
     private ImageButton closeBtn;
@@ -28,8 +31,12 @@ public class LivingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_living);
+
+        BarrageFragment barrageFragment = new BarrageFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.home_content,barrageFragment,"main").commit();
 
         initViews();
         initLiveView();

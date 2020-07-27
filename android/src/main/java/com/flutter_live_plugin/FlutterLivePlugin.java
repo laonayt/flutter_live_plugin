@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -60,8 +62,11 @@ public class FlutterLivePlugin implements FlutterPlugin, MethodCallHandler {
       intent.putExtra("url",url);
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
       context.startActivity(intent);
-
-    } else {
+    }
+    else if (call.method.equals("sendBarrage")) {
+      EventBus.getDefault().post(call.argument("msg"));
+    }
+    else {
       result.notImplemented();
     }
   }
