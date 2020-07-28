@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_live_plugin/flutter_live_plugin.dart';
 import 'package:flutter_live_plugin_example/mqtt_tool.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,9 +35,17 @@ class _MyAppState extends State<MyApp> {
         ),
         body: RaisedButton(
           child: Text("开始直播"),
-          onPressed: () {
-            var url = "rtmp://192.168.101.240/rtmplive/test";
-            FlutterLivePlugin.startLive(url);
+          onPressed: () async {
+            var camera = await Permission.camera.status;
+            var mic = await Permission.microphone.status;
+            if (camera.isUndetermined && mic.isUndetermined) {
+              await Permission.camera.request();
+              await Permission.microphone.request();
+              await Permission.speech.request();
+            } else {
+              var url = "rtmp://192.168.101.164/rtmplive/test";
+              FlutterLivePlugin.startLive(url);
+            }
           },
         ),
       ),
