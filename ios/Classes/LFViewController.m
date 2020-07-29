@@ -8,7 +8,7 @@
 
 #import "LFViewController.h"
 #import "LFLiveKit.h"
-#import "ChatRoomView.h"
+#import "BarrageView.h"
 
 typedef enum {
     foront_Camera,
@@ -31,6 +31,7 @@ typedef enum {
 @property (nonatomic ,strong) UIImageView *countImageV;
 @property (nonatomic ,assign) int countIndex;
 @property (nonatomic ,assign) UIButton *startLiveBtn;
+@property (nonatomic ,strong) BarrageView *barrageV;
 @end
 
 @implementation LFViewController
@@ -51,18 +52,20 @@ typedef enum {
     [self initUI];
     
     [self countDown];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveBarrageMsg:) name:@"barrageNoti" object:nil];
 }
 
 #pragma mark - UI
 
 - (void)initUI {
-    UIButton *backBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    UIButton *backBtn = [[UIButton alloc] initWithFrame:CGRectMake(8, 20, 44, 44)];
     backBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     [backBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backBtn];
     
-    UILabel *stateLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenW-80)/2, 0, 80, 44)];
+    UILabel *stateLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenW-80)/2, 20, 80, 44)];
     stateLabel.font = [UIFont systemFontOfSize:17];
     stateLabel.textColor = [UIColor whiteColor];
     stateLabel.text = @"未连接";
@@ -70,15 +73,15 @@ typedef enum {
     [self.view addSubview:stateLabel];
     self.stateLabel = stateLabel;
     
-    UIButton *switchBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenW-50, 0, 50, 44)];
+    UIButton *switchBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenW-50, 20, 50, 44)];
     switchBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-    [switchBtn setImage:[UIImage imageNamed:@"switch_camera"] forState:UIControlStateNormal];
+    [switchBtn setImage:[UIImage imageNamed:@"switch"] forState:UIControlStateNormal];
     [switchBtn addTarget:self action:@selector(switchCameraBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:switchBtn];
     
-    UIButton *startLiveBtn = [[UIButton alloc] initWithFrame:CGRectMake((ScreenW-80)/2, ScreenH-200, 80, 80)];
-    [startLiveBtn setImage:[UIImage imageNamed:@"start_live"] forState:UIControlStateNormal];
-    [startLiveBtn setImage:[UIImage imageNamed:@"pause_live"] forState:UIControlStateSelected];
+    UIButton *startLiveBtn = [[UIButton alloc] initWithFrame:CGRectMake((ScreenW-60)/2, ScreenH-80, 60, 60)];
+    [startLiveBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+    [startLiveBtn setImage:[UIImage imageNamed:@"stop"] forState:UIControlStateSelected];
     [startLiveBtn addTarget:self action:@selector(startLive:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:startLiveBtn];
     self.startLiveBtn = startLiveBtn;
@@ -87,16 +90,16 @@ typedef enum {
     [self.view addSubview:imageV];
     self.countImageV = imageV;
     
-    ChatRoomView *chatV = [[ChatRoomView alloc] initWithFrame:CGRectMake(0, ScreenH-300, ScreenW, 280)];
-    [self.view addSubview:chatV];
+    CGFloat h = 250;
+    CGFloat y = startLiveBtn.frame.origin.y - 20 - h;
+    BarrageView *barrageV = [[BarrageView alloc] initWithFrame:CGRectMake(0, y, ScreenW, h) style:UITableViewStylePlain];
+    [self.view addSubview:barrageV];
+    self.barrageV = barrageV;
 }
 
-//int dd = 1;
-//- (void)mockMessage {
-//    [self.chatV receiveMessageMethod:[NSString stringWithFormat:@"Hello: %d",dd]];
-//    [self performSelector:@selector(mockMessage) withObject:nil afterDelay:1];
-//    dd++;
-//}
+-(void)receiveBarrageMsg:(NSNotification *)noti {
+    [self.barrageV receiveMsg:noti.object];
+}
 
 #pragma mark - 倒计时
 - (void)countDown {
@@ -134,6 +137,9 @@ typedef enum {
     self.session.preView = nil;
 
     [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
