@@ -3,6 +3,7 @@ import 'package:flutter_live_plugin/flutter_live_plugin.dart';
 import 'package:flutter_live_plugin_example/mqtt_tool.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -24,6 +25,10 @@ class _MyAppState extends State<MyApp> {
       FlutterLivePlugin.sendBarrage(msg);
       print("哈哈哈:" + msg);
     };
+
+    FlutterLivePlugin.eventChannele.receiveBroadcastStream().listen((event) {
+      print('_eventChannel 收到：' + event);
+    });
   }
 
   @override
