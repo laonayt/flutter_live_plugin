@@ -27,13 +27,24 @@ public class FlutterLivePlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    FlutterLivePlugin plugin = new FlutterLivePlugin();
+    final FlutterLivePlugin plugin = new FlutterLivePlugin();
     plugin.context = flutterPluginBinding.getApplicationContext();
 
-    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter/live/methodChannel");
+    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter/live/methodChannel");
     channel.setMethodCallHandler(plugin);
 
-    eventChannel = new EventChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter/live/eventChannel");
+    eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter/live/eventChannel");
+    eventChannel.setStreamHandler(new EventChannel.StreamHandler() {
+      @Override
+      public void onListen(Object o, EventChannel.EventSink eventSink) {
+        StaticTool.getTool().eventSink = eventSink;
+      }
+
+      @Override
+      public void onCancel(Object o) {
+        StaticTool.getTool().eventSink = null;
+      }
+    });
 
     Log.e("AndroidPlugin","onAttachedToEngine");
   }

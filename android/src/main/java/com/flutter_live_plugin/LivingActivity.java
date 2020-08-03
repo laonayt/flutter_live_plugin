@@ -172,6 +172,7 @@ public class LivingActivity extends AppCompatActivity implements View.OnClickLis
                         public void onClick(DialogInterface dialogInterface, int i) {
                             mLFLiveView.stop();
                             mLFLiveView.release();
+                            StaticTool.getTool().eventSink.success("liveStop");
                             finish();
                         }
                     })
