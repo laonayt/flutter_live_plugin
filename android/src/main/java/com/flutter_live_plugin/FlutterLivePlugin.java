@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-
 import org.greenrobot.eventbus.EventBus;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
@@ -23,14 +23,17 @@ public class FlutterLivePlugin implements FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
   private Context context;
+  private EventChannel eventChannel;
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     FlutterLivePlugin plugin = new FlutterLivePlugin();
     plugin.context = flutterPluginBinding.getApplicationContext();
 
-    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_live_plugin");
+    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter/live/methodChannel");
     channel.setMethodCallHandler(plugin);
+
+    eventChannel = new EventChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter/live/eventChannel");
 
     Log.e("AndroidPlugin","onAttachedToEngine");
   }
@@ -45,13 +48,13 @@ public class FlutterLivePlugin implements FlutterPlugin, MethodCallHandler {
   // depending on the user's project. onAttachedToEngine or registerWith must both be defined
   // in the same class.
   public static void registerWith(Registrar registrar) {
-    FlutterLivePlugin plugin = new FlutterLivePlugin();
-    plugin.context = registrar.context();
-
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_live_plugin");
-    channel.setMethodCallHandler(plugin);
-
-    Log.e("AndroidPlugin","registerWith");
+//    FlutterLivePlugin plugin = new FlutterLivePlugin();
+//    plugin.context = registrar.context();
+//
+//    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter/live/methodChannel");
+//    channel.setMethodCallHandler(plugin);
+//
+//    Log.e("AndroidPlugin","registerWith");
   }
 
   @Override

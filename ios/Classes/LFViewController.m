@@ -43,7 +43,7 @@ typedef enum {
     //默认前置摄像头
     self.cameraType = foront_Camera;
     //隐藏状态栏
-    [UIApplication sharedApplication].statusBarHidden = YES;
+    //[UIApplication sharedApplication].statusBarHidden = YES;
     
     self.countIndex = 5;
     
@@ -130,17 +130,25 @@ typedef enum {
 #pragma mark - 关闭
 
 - (void)closeBtnClick {
-    [self.session stopLive];
-    self.session.beautyFace = NO;
-    [self.session setRunning:NO];
-    self.session.delegate = nil;
-    self.session.preView = nil;
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"提示" message:@"退出直播间？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.session stopLive];
+        self.session.beautyFace = NO;
+        [self.session setRunning:NO];
+        self.session.delegate = nil;
+        self.session.preView = nil;
 
-    [UIApplication sharedApplication].statusBarHidden = NO;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+        _eventSink(@"liveClose");
+
+//        [UIApplication sharedApplication].statusBarHidden = NO;
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertC addAction:sureAction];
+    [alertC addAction:cancleAction];
+    [self presentViewController:alertC animated:true completion:nil];
 }
 
 #pragma mark - 切换摄像头
@@ -151,6 +159,18 @@ typedef enum {
     self.session.captureDevicePosition = (devicePositon == AVCaptureDevicePositionBack) ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
     
     self.cameraType = (devicePositon == AVCaptureDevicePositionFront) ? back_Camera : foront_Camera;
+}
+
+#pragma mark - FlutterStreamHandler
+
+- (FlutterError * _Nullable)onCancelWithArguments:(id _Nullable)arguments {
+    _eventSink = nil;
+    return nil;
+}
+
+- (FlutterError * _Nullable)onListenWithArguments:(id _Nullable)arguments eventSink:(nonnull FlutterEventSink)events {
+    _eventSink = events;
+    return nil;
 }
 
 #pragma mark - 懒加载

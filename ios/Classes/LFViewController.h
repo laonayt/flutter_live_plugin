@@ -10,8 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LFViewController : UIViewController
+@interface LFViewController : UIViewController<FlutterStreamHandler>
 @property (nonatomic ,copy) NSString *liveUrl;
+@property (nonatomic) FlutterEventSink eventSink;
 @end
 
 NS_ASSUME_NONNULL_END

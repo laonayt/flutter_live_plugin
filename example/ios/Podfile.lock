@@ -4,10 +4,13 @@ PODS:
     - Flutter
     - LFLiveKit
   - LFLiveKit (2.6)
+  - "permission_handler (5.0.1+1)":
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_live_plugin (from `.symlinks/plugins/flutter_live_plugin/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 SPEC REPOS:
   trunk:
@@ -18,11 +21,14 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_live_plugin:
     :path: ".symlinks/plugins/flutter_live_plugin/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_live_plugin: 654321d6ad1a4f7f8cdd6a25c07e4a7e65b314ea
   LFLiveKit: 2219563721f8aa0f188effc3395a06e2d53b23f2
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
 
 PODFILE CHECKSUM: f32fb4e7c14f8b3ca19a369d7be425dd9241af27
 
