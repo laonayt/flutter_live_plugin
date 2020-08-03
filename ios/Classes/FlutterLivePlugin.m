@@ -11,30 +11,21 @@
       methodChannelWithName:@"flutter/live/methodChannel"
             binaryMessenger:[registrar messenger]];
 
-  FlutterLivePlugin* instance = [[FlutterLivePlugin alloc] initWithViewController:viewController];
+  FlutterEventChannel *eventChannel = [FlutterEventChannel eventChannelWithName:@"flutter/live/eventChannel" binaryMessenger:[registrar messenger]];
 
+  LFViewController *liveVC = [[LFViewController alloc] init];
+  [eventChannel setStreamHandler:liveVC];
+
+  FlutterLivePlugin *instance = [[FlutterLivePlugin alloc] init];
+  instance.liveVC = liveVC;
   [registrar addMethodCallDelegate:instance channel:channel];
-}
-
-- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar{
-    self = [super init];
-    if (self) {
-        _registrar = registrar;
-        _liveVC = [[LFViewController alloc] init];
-
-        FlutterEventChannel *eventChannel = [FlutterEventChannel eventChannelWithName:@"flutter/live/eventChannel" binaryMessenger:[_registrar messenger]];
-        [eventChannel setStreamHandler:_liveVC];
-    }
-    return self;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   NSDictionary * dict = call.arguments;
 
-  UIViewController *viewController =
-    [UIApplication sharedApplication].delegate.window.rootViewController;
-
   if ([call.method isEqualToString:@"startLive"]) {
+      UIViewController *viewController = [UIApplication sharedApplication].delegate.window.rootViewController;
       _liveVC.liveUrl = dict[@"url"];
       _liveVC.modalPresentationStyle = UIModalPresentationFullScreen;
       [viewController presentViewController:_liveVC animated:YES completion:nil];

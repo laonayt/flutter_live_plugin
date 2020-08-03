@@ -138,7 +138,9 @@ typedef enum {
         self.session.delegate = nil;
         self.session.preView = nil;
 
-        _eventSink(@"liveClose");
+        if (_eventSink) {
+           _eventSink(@"liveClose");
+        }
 
 //        [UIApplication sharedApplication].statusBarHidden = NO;
         [self dismissViewControllerAnimated:YES completion:nil];
