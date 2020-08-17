@@ -49,28 +49,28 @@ public class BarrageFragment extends Fragment {
         recyclerView.setAdapter(bAapter);
 
         //注册eventbus
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
 
         return view;
 
 //        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(String msg) {
-        int randomIndex = random.nextInt(drawList.length);
-        int drawId = drawList[randomIndex];
-
-        BarrageBean bean = new BarrageBean(msg,drawId);
-        dataList.add(bean);
-
-        bAapter.notifyDataSetChanged();
-        recyclerView.smoothScrollToPosition(dataList.size() - 1);
-    };
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessageEvent(String msg) {
+//        int randomIndex = random.nextInt(drawList.length);
+//        int drawId = drawList[randomIndex];
+//
+//        BarrageBean bean = new BarrageBean(msg,drawId);
+//        dataList.add(bean);
+//
+//        bAapter.notifyDataSetChanged();
+//        recyclerView.smoothScrollToPosition(dataList.size() - 1);
+//    };
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 }

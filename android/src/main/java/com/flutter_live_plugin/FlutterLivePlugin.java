@@ -88,5 +88,6 @@ public class FlutterLivePlugin implements FlutterPlugin, MethodCallHandler {
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);
+    eventChannel.setStreamHandler(null);
   }
 }

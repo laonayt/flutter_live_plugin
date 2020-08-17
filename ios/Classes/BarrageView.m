@@ -8,6 +8,8 @@
 
 #import "BarrageView.h"
 
+#define ScreenW  [UIScreen mainScreen].bounds.size.width
+
 @interface BarrageView()<UITableViewDataSource>
 @property (strong , nonatomic) NSMutableArray * dataArray;
 @end
@@ -85,8 +87,8 @@
 
 - (CGFloat)strWidth:(NSString *)content {
     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15],};
-    CGSize textSize = [content boundingRectWithSize:CGSizeMake(100, 40) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
-    return textSize.width + 30;
+    CGSize textSize = [content boundingRectWithSize:CGSizeMake(ScreenW-10, 40) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
+    return textSize.width+10;
 }
 
 @end

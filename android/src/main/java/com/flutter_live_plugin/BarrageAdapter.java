@@ -25,7 +25,7 @@ public class BarrageAdapter extends RecyclerView.Adapter<BarrageAdapter.BarrageV
     @NonNull
     @Override
     public BarrageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.barrage_item, parent, false);
+        View view = View.inflate(context, R.layout.barrage_item,null);
         return new BarrageViewHolder(view);
     }
 
@@ -33,7 +33,7 @@ public class BarrageAdapter extends RecyclerView.Adapter<BarrageAdapter.BarrageV
     public void onBindViewHolder(@NonNull BarrageViewHolder holder, int position) {
         BarrageBean bean = dataList.get(position);
         holder.title_tv.setText(bean.content);
-        holder.title_tv.setBackgroundDrawable(ContextCompat.getDrawable(context, bean.drawId));
+        holder.title_tv.setBackgroundResource(bean.drawId);
     }
 
     @Override
