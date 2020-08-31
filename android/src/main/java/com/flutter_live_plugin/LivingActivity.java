@@ -173,7 +173,7 @@ public class LivingActivity extends AppCompatActivity implements View.OnClickLis
                             mLFLiveView.stop();
                             mLFLiveView.release();
                             if (StaticTool.getTool().eventSink != null){
-                                StaticTool.getTool().eventSink.success("liveStop");
+                                StaticTool.getTool().eventSink.success("liveClose");
                             }
                             finish();
                         }
