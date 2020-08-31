@@ -163,18 +163,6 @@ typedef enum {
     self.cameraType = (devicePositon == AVCaptureDevicePositionFront) ? back_Camera : foront_Camera;
 }
 
-#pragma mark - FlutterStreamHandler
-
-- (FlutterError * _Nullable)onCancelWithArguments:(id _Nullable)arguments {
-    _eventSink = nil;
-    return nil;
-}
-
-- (FlutterError * _Nullable)onListenWithArguments:(id _Nullable)arguments eventSink:(nonnull FlutterEventSink)events {
-    _eventSink = events;
-    return nil;
-}
-
 #pragma mark - 懒加载
 
 - (LFLiveSession *)session {

@@ -46,7 +46,6 @@ class _MyAppState extends State<MyApp> {
             if (camera.isUndetermined && mic.isUndetermined) {
               await Permission.camera.request();
               await Permission.microphone.request();
-              await Permission.speech.request();
             } else {
               var url = "rtmp://192.168.101.164/rtmplive/test";
               FlutterLivePlugin.startLive(url);
