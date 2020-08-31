@@ -39,5 +39,5 @@ dependencies {
     //LFLive
     implementation 'com.laifeng:sopcast-sdk:1.0.4'
     //EventBus
-    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

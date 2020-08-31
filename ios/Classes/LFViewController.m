@@ -41,7 +41,7 @@ typedef enum {
     
     self.view.backgroundColor = [UIColor blackColor];
     //默认前置摄像头
-    self.cameraType = foront_Camera;
+    self.cameraType = back_Camera;
     //隐藏状态栏
     //[UIApplication sharedApplication].statusBarHidden = YES;
     
